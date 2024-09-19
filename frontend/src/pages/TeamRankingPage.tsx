@@ -4,7 +4,7 @@ import { Box, Button, TextField, Typography } from "@mui/material";
 import TeamInfoTable from "../components/TeamInfoTable";
 import { Match, Team, TeamAggregate } from "../types/types";
 import MatchInfoTable from "../components/MatchInfoTable";
-import { ionMdReturnLeft } from "@quasar/extras/ionicons-v4";
+import RankingTable from "../components/RankingTable";
 
 const TeamRankingPage = () => {
   const [teamInput, setTeamInput] = useState("");
@@ -110,7 +110,6 @@ const TeamRankingPage = () => {
     });
 
     const rankingsArray = Object.values(teamAggregate);
-    console.log(rankingsArray.sort(rankingFunc));
 
     return rankingsArray.sort(rankingFunc);
   };
@@ -195,7 +194,9 @@ const TeamRankingPage = () => {
       </Box>
 
       <MatchInfoTable matches={matches} />
+      <RankingTable ranks={rankings}/>
     </Box>
+    
   );
 };
 
