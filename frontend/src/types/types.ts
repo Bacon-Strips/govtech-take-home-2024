@@ -10,3 +10,10 @@ export interface Match {
   teamAGoals: number;
   teamBGoals: number;
 }
+
+export interface TeamAggregate extends Team {
+  wins: number;
+  draws: number;
+  losses: number;
+  goals: number;
+}
