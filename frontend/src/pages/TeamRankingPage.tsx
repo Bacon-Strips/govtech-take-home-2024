@@ -8,6 +8,7 @@ import MatchInfoTable from "../components/MatchInfoTable";
 import RankingTable from "../components/RankingTable";
 import TeamInputBox from "../components/TeamInputBox";
 import MatchInputBox from "../components/MatchInputBox";
+import RankCalculator from "../components/RankCalculator";
 
 const TeamRankingPage = () => {
   const [teams, setTeams] = useState<Team[]>([]);
@@ -38,6 +39,10 @@ const TeamRankingPage = () => {
   const clearMatches = () => {
     setMatches([]);
     addLog(`Cleared matches`);
+  };
+
+  const updateRankings = (teamAggregates: TeamAggregate[]) => {
+    setRankings(teamAggregates);
   };
 
   const calculateRankings = (allMatches: Match[]) => {
@@ -120,7 +125,6 @@ const TeamRankingPage = () => {
       <Typography id="title" variant="h4" gutterBottom>
         Championship Team Rankings
       </Typography>
-      <Button onClick={() => console.log(logs)}>Test</Button>
 
       <Box
         id="team-ranking-body"
@@ -161,7 +165,7 @@ const TeamRankingPage = () => {
         </Box>
 
         <Box id="ranking-info" p={4}>
-          <Typography variant="h6">Rankings</Typography>
+          {/* <Typography variant="h6">Rankings</Typography>
           <Button
             variant="contained"
             color="primary"
@@ -169,7 +173,12 @@ const TeamRankingPage = () => {
             sx={{ mb: 2 }}
           >
             Calculate Rankings
-          </Button>
+          </Button> */}
+          <RankCalculator
+            teams={teams}
+            matches={matches}
+            onCalculate={updateRankings}
+          />
           <RankingTable ranks={rankings} />
         </Box>
       </Box>
