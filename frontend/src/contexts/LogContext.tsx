@@ -5,7 +5,7 @@ interface LogContextType {
   addLog: (message: string) => void;
 }
 
-export const LogContext = createContext<LogContextType | undefined>(undefined);
+export const LogContext = createContext<LogContextType>({} as LogContextType);
 
 const LogProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [logs, setLogs] = useState<string[]>([]);

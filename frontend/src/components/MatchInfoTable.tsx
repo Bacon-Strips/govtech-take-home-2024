@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
   Box,
   Button,
@@ -12,6 +12,7 @@ import {
   TableRow,
   TextField,
 } from "@mui/material";
+import { LogContext } from "../contexts/LogContext";
 import { Match } from "../types/types";
 
 interface MatchInfoTableProps {
@@ -30,6 +31,8 @@ const MatchInfoTable = ({ matches, updateMatch }: MatchInfoTableProps) => {
   const rowsPerPage = 6;
   const [searchQuery, setSearchQuery] = useState("");
 
+  const { addLog } = useContext(LogContext);
+
   const handleChangePage = (_: unknown, newPage: number) => {
     setPage(newPage);
   };
@@ -47,6 +50,7 @@ const MatchInfoTable = ({ matches, updateMatch }: MatchInfoTableProps) => {
   const handleSave = (index: number) => {
     const oldMatch = matches[index + rowsPerPage * page];
     if (editedMatch) {
+      addLog(`Updating match from ${oldMatch} to ${editedMatch}`);
       updateMatch(oldMatch.teamA, oldMatch.teamB, editedMatch);
     }
     setEditingRow(null);

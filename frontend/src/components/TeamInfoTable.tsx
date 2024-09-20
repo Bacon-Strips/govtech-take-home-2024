@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
   Box,
   Button,
@@ -12,6 +12,7 @@ import {
   TableRow,
   TextField,
 } from "@mui/material";
+import { LogContext } from "../contexts/LogContext";
 import { Team } from "../types/types";
 
 interface TeamInfoTableProps {
@@ -24,8 +25,9 @@ const TeamInfoTable = ({ teams, updateTeam }: TeamInfoTableProps) => {
   const [editedTeam, setEditedTeam] = useState<Team | null>(null);
   const [page, setPage] = useState(0);
   const rowsPerPage = 6;
-
   const [searchQuery, setSearchQuery] = useState("");
+
+  const { addLog } = useContext(LogContext);
 
   const handleChangePage = (_: unknown, newPage: number) => {
     setPage(newPage);
@@ -44,6 +46,7 @@ const TeamInfoTable = ({ teams, updateTeam }: TeamInfoTableProps) => {
   const handleSave = (index: number) => {
     const oldTeam = teams[index + rowsPerPage * page];
     if (editedTeam) {
+      addLog(`Updating team from ${oldTeam} to ${editedTeam}`);
       updateTeam(oldTeam.name, editedTeam);
     }
     setEditingRow(null);

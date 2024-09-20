@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Box, Button, Typography } from "@mui/material";
 
+import { LogContext } from "../contexts/LogContext";
 import TeamInfoTable from "../components/TeamInfoTable";
 import { Match, Team, TeamAggregate } from "../types/types";
 import MatchInfoTable from "../components/MatchInfoTable";
@@ -13,21 +14,31 @@ const TeamRankingPage = () => {
   const [matches, setMatches] = useState<Match[]>([]);
   const [rankings, setRankings] = useState<TeamAggregate[]>([]);
 
+  const { addLog, logs } = useContext(LogContext);
+
   const addTeams = (newTeams: Team[]) => {
     setTeams((prevTeams) => [...prevTeams, ...newTeams]);
+    addLog(`Added teams: ${newTeams.map((team) => team.name).join(", ")}`);
   };
 
   const clearTeams = () => {
     setTeams([]);
+    addLog(`Cleared teams`);
   };
 
   const addMatches = (newMatches: Match[]) => {
     setMatches((prevMatches) => [...prevMatches, ...newMatches]);
+    addLog(
+      `Added matches: ${newMatches
+        .map((match) => `${match.teamA} vs ${match.teamB}`)
+        .join(", ")}`
+    );
   };
 
   const clearMatches = () => {
     setMatches([]);
-  }
+    addLog(`Cleared matches`);
+  };
 
   const calculateRankings = (allMatches: Match[]) => {
     const teamAggregate: { [key: string]: TeamAggregate } = {};
@@ -109,6 +120,7 @@ const TeamRankingPage = () => {
       <Typography id="title" variant="h4" gutterBottom>
         Championship Team Rankings
       </Typography>
+      <Button onClick={() => console.log(logs)}>Test</Button>
 
       <Box
         id="team-ranking-body"
