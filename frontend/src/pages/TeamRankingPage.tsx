@@ -72,10 +72,8 @@ const TeamRankingPage = () => {
         teamBGoals: parseInt(goalsB),
       };
     });
-    const allMatches = [...matches, ...newMatches];
 
     setMatches((prevMatches) => [...prevMatches, ...newMatches]);
-    setRankings(calculateRankings(allMatches));
     setMatchInput("");
   };
 
@@ -111,7 +109,7 @@ const TeamRankingPage = () => {
 
     const rankingsArray = Object.values(teamAggregate);
 
-    return rankingsArray.sort(rankingFunc);
+    setRankings(rankingsArray.sort(rankingFunc));
   };
 
   const rankingFunc = (a: TeamAggregate, b: TeamAggregate) => {
@@ -136,67 +134,97 @@ const TeamRankingPage = () => {
 
   return (
     <Box p={4}>
-      <Typography variant="h4" gutterBottom>
+      <Typography id="title" variant="h4" gutterBottom>
         Championship Team Rankings
       </Typography>
 
-      <Box mb={4}>
-        <Typography variant="h6">Enter Team Information</Typography>
-        <TextField
-          id="team-info-textbox"
-          multiline
-          rows={12}
-          fullWidth
-          placeholder="<Team name> <Registration date in DD/MM> <Group number>"
-          value={teamInput}
-          onChange={(e) => setTeamInput(e.target.value)}
-          sx={{
-            "& .MuiInputBase-input::placeholder": {
-              color: "white",
-            },
-          }}
-        />
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleTeamSubmit}
-          sx={{ mt: 2 }}
-        >
-          Add teams
-        </Button>
-      </Box>
-      <TeamInfoTable teams={teams} />
+      <Box
+        id="team-ranking-body"
+        sx={{ display: "flex", flexDirection: "row" }}
+      >
+        <Box p={4} id="team-info">
+          <Box mb={4}>
+            <Typography variant="h6">Enter Team Information</Typography>
+            <TextField
+              id="team-info-textbox"
+              multiline
+              rows={12}
+              fullWidth
+              placeholder="<Team name> <Registration date in DD/MM> <Group number>"
+              value={teamInput}
+              onChange={(e) => setTeamInput(e.target.value)}
+              sx={{
+                "& .MuiInputBase-input::placeholder": {
+                  color: "white",
+                },
+                "& .MuiInputBase-input": {
+                  color: "white",
+                },
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
+                    borderColor: "white",
+                  },
+                  "&:hover fieldset": {
+                    borderColor: "white",
+                  },
+                },
+              }}
+            />
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleTeamSubmit}
+              sx={{ mt: 2 }}
+            >
+              Add teams
+            </Button>
+          </Box>
+          <TeamInfoTable teams={teams} />
+        </Box>
 
-      <Box mb={4} mt={4}>
-        <Typography variant="h6">Enter Match Results</Typography>
-        <TextField
-          id="match-results-textbox"
-          multiline
-          rows={12}
-          fullWidth
-          placeholder="<Team A name> <Team B name> <Team A goals scored> <Team B goals scored>"
-          value={matchInput}
-          onChange={(e) => setMatchInput(e.target.value)}
-          sx={{
-            "& .MuiInputBase-input::placeholder": {
-              color: "white",
-            },
-          }}
-        />
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleMatchSubmit}
-          sx={{ mt: 2 }}
-        >
-          Add Matches
-        </Button>
-      </Box>
+        <Box p={4} id="match-info">
+          <Box mb={4}>
+            <Typography variant="h6">Enter Match Results</Typography>
+            <TextField
+              id="match-results-textbox"
+              multiline
+              rows={12}
+              fullWidth
+              placeholder="<Team A name> <Team B name> <Team A goals scored> <Team B goals scored>"
+              value={matchInput}
+              onChange={(e) => setMatchInput(e.target.value)}
+              sx={{
+                "& .MuiInputBase-input::placeholder": {
+                  color: "white",
+                },
+              }}
+            />
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleMatchSubmit}
+              sx={{ mt: 2 }}
+            >
+              Add Matches
+            </Button>
+          </Box>
+          <MatchInfoTable matches={matches} />
+        </Box>
 
-      <MatchInfoTable matches={matches} />
-      <RankingTable ranks={rankings}/>
+        <Box id="ranking-info" p={4}>
+          <Typography variant="h6">Rankings</Typography>
+          <RankingTable ranks={rankings} />
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => calculateRankings(matches)}
+            sx={{ mt: 2 }}
+          >
+            Calculate Ranking
+          </Button>
+        </Box>
+      </Box>
     </Box>
-    
   );
 };
 
