@@ -18,8 +18,7 @@ import { Match } from "../types/types";
 interface MatchInfoTableProps {
   matches: Match[];
   updateMatch: (
-    oldMatchTeamA: string,
-    oldMatchTeamB: string,
+    index: number,
     updatedMatch: Match
   ) => void;
 }
@@ -51,7 +50,7 @@ const MatchInfoTable = ({ matches, updateMatch }: MatchInfoTableProps) => {
     const oldMatch = matches[index + rowsPerPage * page];
     if (editedMatch) {
       addLog(`Updating match from ${oldMatch} to ${editedMatch}`);
-      updateMatch(oldMatch.teamA, oldMatch.teamB, editedMatch);
+      updateMatch(index + rowsPerPage * page, editedMatch);
     }
     setEditingRow(null);
   };

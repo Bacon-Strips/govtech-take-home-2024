@@ -1,11 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import {
-  AppBar,
-  Box,
-  Button,
-  Toolbar,
-  Typography,
-} from "@mui/material";
+import { AppBar, Box, Button, Toolbar, Typography } from "@mui/material";
 
 import { LogContext } from "../contexts/LogContext";
 import TeamInfoTable from "../components/TeamInfoTable";
@@ -52,23 +46,15 @@ const TeamRankingPage = () => {
     setRankings(teamAggregates);
   };
 
-  const updateTeam = (oldTeamName: string, updatedTeam: Team) => {
+  const updateTeam = (index: number, updatedTeam: Team) => {
     setTeams((prevTeams) =>
-      prevTeams.map((team) => (team.name === oldTeamName ? updatedTeam : team))
+      prevTeams.map((team, i) => (i === index ? updatedTeam : team))
     );
   };
 
-  const updateMatch = (
-    oldTeamA: string,
-    oldTeamB: string,
-    updatedMatch: Match
-  ) => {
+  const updateMatch = (index: number, updatedMatch: Match) => {
     setMatches((prevMatches) =>
-      prevMatches.map((match) =>
-        match.teamA === oldTeamA && match.teamB === oldTeamB
-          ? updatedMatch
-          : match
-      )
+      prevMatches.map((match, i) => (i === index ? updatedMatch : match))
     );
   };
 
@@ -76,7 +62,7 @@ const TeamRankingPage = () => {
     const savedTeams = localStorage.getItem("teams");
     const savedMatches = localStorage.getItem("matches");
     const savedRankings = localStorage.getItem("rankings");
-    console.log([savedTeams, savedMatches, savedRankings])
+    console.log([savedTeams, savedMatches, savedRankings]);
     if (savedTeams) {
       addTeams(JSON.parse(savedTeams));
     }
@@ -89,15 +75,15 @@ const TeamRankingPage = () => {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('teams', JSON.stringify(teams));
+    localStorage.setItem("teams", JSON.stringify(teams));
   }, [teams]);
 
   useEffect(() => {
-    localStorage.setItem('matches', JSON.stringify(matches));
+    localStorage.setItem("matches", JSON.stringify(matches));
   }, [matches]);
 
   useEffect(() => {
-    localStorage.setItem('rankings', JSON.stringify(rankings));
+    localStorage.setItem("rankings", JSON.stringify(rankings));
   }, [rankings]);
 
   return (

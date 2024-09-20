@@ -17,7 +17,7 @@ import { Team } from "../types/types";
 
 interface TeamInfoTableProps {
   teams: Team[];
-  updateTeam: (oldTeamName: string, updatedTeam: Team) => void;
+  updateTeam: (index: number, updatedTeam: Team) => void;
 }
 
 const TeamInfoTable = ({ teams, updateTeam }: TeamInfoTableProps) => {
@@ -47,7 +47,7 @@ const TeamInfoTable = ({ teams, updateTeam }: TeamInfoTableProps) => {
     const oldTeam = teams[index + rowsPerPage * page];
     if (editedTeam) {
       addLog(`Updating team from ${oldTeam} to ${editedTeam}`);
-      updateTeam(oldTeam.name, editedTeam);
+      updateTeam(index + rowsPerPage * page, editedTeam);
     }
     setEditingRow(null);
   };
