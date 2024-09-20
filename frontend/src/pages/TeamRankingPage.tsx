@@ -25,6 +25,10 @@ const TeamRankingPage = () => {
     setMatches((prevMatches) => [...prevMatches, ...newMatches]);
   };
 
+  const clearMatches = () => {
+    setMatches([]);
+  }
+
   const calculateRankings = (allMatches: Match[]) => {
     const teamAggregate: { [key: string]: TeamAggregate } = {};
 
@@ -132,6 +136,14 @@ const TeamRankingPage = () => {
         <Box p={4} id="match-info">
           <Box mb={4}>
             <MatchInputBox onAddMatches={addMatches} />
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={clearMatches}
+              sx={{ mt: 2 }}
+            >
+              Clear matches
+            </Button>
           </Box>
           <MatchInfoTable matches={matches} updateMatch={updateMatch} />
         </Box>
