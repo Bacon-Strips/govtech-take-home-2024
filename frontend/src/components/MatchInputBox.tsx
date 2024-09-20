@@ -67,6 +67,8 @@ const MatchInputBox: React.FC<MatchInputBoxProps> = ({ onAddMatches }) => {
         placeholder="<Team A name> <Team B name> <Team A goals scored> <Team B goals scored>"
         value={matchInput}
         onChange={(e) => setMatchInput(e.target.value)}
+        error={error != null}
+        helperText={error}
         sx={{
           "& .MuiInputBase-input::placeholder": {
             color: "white",

@@ -54,6 +54,8 @@ const TeamInputBox: React.FC<TeamInputBoxProps> = ({ onAddTeams }) => {
         placeholder="<Team name> <Registration date in DD/MM> <Group number>"
         value={teamInput}
         onChange={(e) => setTeamInput(e.target.value)}
+        error={error != null}
+        helperText={error}
         sx={{
           "& .MuiInputBase-input::placeholder": {
             color: "white",
