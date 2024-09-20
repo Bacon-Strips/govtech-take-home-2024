@@ -19,7 +19,7 @@ const RankingTable = ({ ranks }: RankingTableProps) => {
     <Box>
       <TableContainer component={Paper}>
         <Box display="flex" justifyContent="space-between">
-          <Table>
+          <Table sx={{ width: "50%" }}>
             <TableHead>
               <TableRow>
                 <TableCell align="center" colSpan={3}>
@@ -44,7 +44,15 @@ const RankingTable = ({ ranks }: RankingTableProps) => {
                 ))}
             </TableBody>
           </Table>
-          <Table>
+
+          <Box
+            sx={{
+              width: "1px",
+              backgroundColor: "black"
+            }}
+          />
+
+          <Table sx={{ width: "50%" }}>
             <TableHead>
               <TableRow>
                 <TableCell align="center" colSpan={3}>
