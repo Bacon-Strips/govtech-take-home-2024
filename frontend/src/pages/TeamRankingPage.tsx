@@ -79,7 +79,15 @@ const TeamRankingPage = () => {
           justifyContent: "space-between",
         }}
       >
-        <Box p={4} id="team-info">
+        <Box
+          p={4}
+          id="team-info"
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            flexGrow: 1,
+          }}
+        >
           <Box mb={4}>
             <TeamInputBox onAddTeams={addTeams} />
             <Button
@@ -94,7 +102,15 @@ const TeamRankingPage = () => {
           <TeamInfoTable teams={teams} updateTeam={updateTeam} />
         </Box>
 
-        <Box p={4} id="match-info">
+        <Box
+          p={4}
+          id="match-info"
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            flexGrow: 1,
+          }}
+        >
           <Box mb={4}>
             <MatchInputBox onAddMatches={addMatches} />
             <Button
@@ -109,7 +125,15 @@ const TeamRankingPage = () => {
           <MatchInfoTable matches={matches} updateMatch={updateMatch} />
         </Box>
 
-        <Box id="ranking-info" p={4}>
+        <Box
+          id="ranking-info"
+          p={4}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            flexGrow: 1,
+          }}
+        >
           <RankCalculator
             teams={teams}
             matches={matches}
