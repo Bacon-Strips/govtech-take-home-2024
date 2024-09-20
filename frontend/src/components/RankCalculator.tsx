@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Box, Button, Typography } from "@mui/material";
 import { Team, Match, TeamAggregate } from "../types/types";
-import { tiRuler } from "@quasar/extras/themify";
 
 interface RankCalculatorProps {
   teams: Team[];

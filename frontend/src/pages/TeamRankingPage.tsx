@@ -45,61 +45,6 @@ const TeamRankingPage = () => {
     setRankings(teamAggregates);
   };
 
-  const calculateRankings = (allMatches: Match[]) => {
-    const teamAggregate: { [key: string]: TeamAggregate } = {};
-
-    teams.forEach((team) => {
-      teamAggregate[team.name] = {
-        ...team,
-        wins: 0,
-        draws: 0,
-        losses: 0,
-        goals: 0,
-      };
-    });
-
-    allMatches.forEach((match) => {
-      teamAggregate[match.teamA].goals += match.teamAGoals;
-      teamAggregate[match.teamB].goals += match.teamBGoals;
-      if (match.teamAGoals > match.teamBGoals) {
-        teamAggregate[match.teamA].wins += 1;
-        teamAggregate[match.teamB].losses += 1;
-      }
-      if (match.teamAGoals < match.teamBGoals) {
-        teamAggregate[match.teamA].losses += 1;
-        teamAggregate[match.teamB].wins += 1;
-      }
-      if (match.teamAGoals == match.teamBGoals) {
-        teamAggregate[match.teamA].draws += 1;
-        teamAggregate[match.teamB].draws += 1;
-      }
-    });
-
-    const rankingsArray = Object.values(teamAggregate);
-
-    setRankings(rankingsArray.sort(rankingFunc));
-  };
-
-  const rankingFunc = (a: TeamAggregate, b: TeamAggregate) => {
-    const matchPointsCalc = (n: TeamAggregate) => n.wins * 3 + n.draws;
-    const altMatchPointsCalc = (n: TeamAggregate) =>
-      n.wins * 5 + n.draws * 3 + n.losses;
-    if (matchPointsCalc(a) != matchPointsCalc(b)) {
-      return matchPointsCalc(b) - matchPointsCalc(a);
-    }
-    if (a.goals != b.goals) return b.goals - a.goals;
-    if (altMatchPointsCalc(a) != altMatchPointsCalc(b)) {
-      return altMatchPointsCalc(b) - altMatchPointsCalc(a);
-    }
-
-    const [dayA, monthA] = a.registrationDate.split("/").map(Number);
-    const [dayB, monthB] = b.registrationDate.split("/").map(Number);
-    if (monthA != monthB) {
-      return monthA - monthB;
-    }
-    return dayA - dayB;
-  };
-
   const updateTeam = (oldTeamName: string, updatedTeam: Team) => {
     setTeams((prevTeams) =>
       prevTeams.map((team) => (team.name === oldTeamName ? updatedTeam : team))
@@ -165,15 +110,6 @@ const TeamRankingPage = () => {
         </Box>
 
         <Box id="ranking-info" p={4}>
-          {/* <Typography variant="h6">Rankings</Typography>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => calculateRankings(matches)}
-            sx={{ mb: 2 }}
-          >
-            Calculate Rankings
-          </Button> */}
           <RankCalculator
             teams={teams}
             matches={matches}
