@@ -165,7 +165,7 @@ const RankCalculator: React.FC<RankCalculatorProps> = ({
   };
 
   return (
-    <Box mb={4}>
+    <Box>
       <Typography variant="h6">Rank Calculation</Typography>
 
       <Typography variant="body1" color={isReady ? "green" : "red"}>

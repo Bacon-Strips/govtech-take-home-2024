@@ -46,6 +46,11 @@ const TeamRankingPage = () => {
     setRankings(teamAggregates);
   };
 
+  const clearRankings = () => {
+    setRankings([]);
+    addLog(`Cleared rankings`);
+  };
+
   const updateTeam = (index: number, updatedTeam: Team) => {
     setTeams((prevTeams) =>
       prevTeams.map((team, i) => (i === index ? updatedTeam : team))
@@ -167,6 +172,17 @@ const TeamRankingPage = () => {
               matches={matches}
               onCalculate={updateRankings}
             />
+            <Box mb={4}>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={clearRankings}
+                sx={{ mt: 2 }}
+              >
+                Clear rankings
+              </Button>
+            </Box>
+
             <RankingTable ranks={rankings} />
           </Box>
         </Box>
