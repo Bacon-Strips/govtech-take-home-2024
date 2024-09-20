@@ -72,8 +72,6 @@ const TeamInputBox: React.FC<TeamInputBoxProps> = ({ onAddTeams }) => {
             },
           },
         }}
-        error={!!error}
-        helperText={error}
       />
       <Button
         variant="contained"

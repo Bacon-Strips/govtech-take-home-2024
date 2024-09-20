@@ -15,11 +15,15 @@ const TeamRankingPage = () => {
 
   const addTeams = (newTeams: Team[]) => {
     setTeams((prevTeams) => [...prevTeams, ...newTeams]);
-  }
+  };
+
+  const clearTeams = () => {
+    setTeams([]);
+  };
 
   const addMatches = (newMatches: Match[]) => {
     setMatches((prevMatches) => [...prevMatches, ...newMatches]);
-  }
+  };
 
   const calculateRankings = (allMatches: Match[]) => {
     const teamAggregate: { [key: string]: TeamAggregate } = {};
@@ -78,9 +82,7 @@ const TeamRankingPage = () => {
 
   const updateTeam = (oldTeamName: string, updatedTeam: Team) => {
     setTeams((prevTeams) =>
-      prevTeams.map((team) =>
-        team.name === oldTeamName ? updatedTeam : team
-      )
+      prevTeams.map((team) => (team.name === oldTeamName ? updatedTeam : team))
     );
   };
 
@@ -106,20 +108,32 @@ const TeamRankingPage = () => {
 
       <Box
         id="team-ranking-body"
-        sx={{ display: "flex", flexDirection: "row" , justifyContent: "space-between"}}
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+        }}
       >
         <Box p={4} id="team-info">
           <Box mb={4}>
-            <TeamInputBox onAddTeams={addTeams}/>
+            <TeamInputBox onAddTeams={addTeams} />
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={clearTeams}
+              sx={{ mt: 2 }}
+            >
+              Clear teams
+            </Button>
           </Box>
-          <TeamInfoTable teams={teams} updateTeam={updateTeam}/>
+          <TeamInfoTable teams={teams} updateTeam={updateTeam} />
         </Box>
 
         <Box p={4} id="match-info">
           <Box mb={4}>
-            <MatchInputBox onAddMatches={addMatches}/>
+            <MatchInputBox onAddMatches={addMatches} />
           </Box>
-          <MatchInfoTable matches={matches} updateMatch={updateMatch}/>
+          <MatchInfoTable matches={matches} updateMatch={updateMatch} />
         </Box>
 
         <Box id="ranking-info" p={4}>
