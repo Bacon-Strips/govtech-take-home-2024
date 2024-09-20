@@ -197,6 +197,17 @@ const TeamRankingPage = () => {
                 "& .MuiInputBase-input::placeholder": {
                   color: "white",
                 },
+                "& .MuiInputBase-input": {
+                  color: "white",
+                },
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
+                    borderColor: "white",
+                  },
+                  "&:hover fieldset": {
+                    borderColor: "white",
+                  },
+                },
               }}
             />
             <Button
@@ -213,15 +224,15 @@ const TeamRankingPage = () => {
 
         <Box id="ranking-info" p={4}>
           <Typography variant="h6">Rankings</Typography>
-          <RankingTable ranks={rankings} />
           <Button
             variant="contained"
             color="primary"
             onClick={() => calculateRankings(matches)}
-            sx={{ mt: 2 }}
+            sx={{ mb: 2 }}
           >
-            Calculate Ranking
+            Calculate Rankings
           </Button>
+          <RankingTable ranks={rankings} />
         </Box>
       </Box>
     </Box>
