@@ -10,11 +10,20 @@ const TeamInputBox: React.FC<TeamInputBoxProps> = ({ onAddTeams }) => {
   const [teamInput, setTeamInput] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
 
+  const isInvalidDate = (date: string) => {
+    const [day, month] = date.split("/");
+    return isNaN(Number(day)) || isNaN(Number(month));
+  };
+
   const isTeamInputInvalid = () => {
     const lines = teamInput.trim().split("\n");
     for (const line of lines) {
       const teamInfo = line.split(" ");
-      if (teamInfo.length !== 3 || isNaN(parseInt(teamInfo[2]))) {
+      if (
+        teamInfo.length !== 3 ||
+        isInvalidDate(teamInfo[1]) ||
+        isNaN(parseInt(teamInfo[2]))
+      ) {
         return true;
       }
     }
@@ -29,7 +38,7 @@ const TeamInputBox: React.FC<TeamInputBoxProps> = ({ onAddTeams }) => {
 
     if (isTeamInputInvalid()) {
       setError(
-        "Invalid input format. Ensure each line has: <Team Name> <Registration Date> <Group Number>"
+        "Invalid input format. Ensure each line has: <Team Name> <Registration Date in DD/MM> <Group Number>"
       );
       return;
     }
