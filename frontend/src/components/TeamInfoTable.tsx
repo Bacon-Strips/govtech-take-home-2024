@@ -1,5 +1,6 @@
 import { useState } from "react";
 import {
+  Box,
   Paper,
   Table,
   TableBody,
@@ -8,6 +9,7 @@ import {
   TableHead,
   TablePagination,
   TableRow,
+  TextField,
 } from "@mui/material";
 import { Team } from "../types/types";
 
@@ -19,12 +21,29 @@ const TeamInfoTable = ({ teams }: TeamInfoTableProps) => {
   const [page, setPage] = useState(0);
   const rowsPerPage = 6;
 
+  const [searchQuery, setSearchQuery] = useState("");
+
   const handleChangePage = (_: unknown, newPage: number) => {
     setPage(newPage);
   };
 
+  const handleSearchChange = (query: string) => {
+    setSearchQuery(query);
+    setPage(0);
+  };
+
   return (
     <TableContainer component={Paper}>
+      <Box id="team-info-searchbox" paddingX={2}>
+        <TextField
+          label="Search Teams"
+          variant="standard"
+          fullWidth
+          value={searchQuery}
+          onChange={(e) => handleSearchChange(e.target.value)}
+        />
+      </Box>
+
       <Table>
         <TableHead>
           <TableRow>
@@ -35,6 +54,7 @@ const TeamInfoTable = ({ teams }: TeamInfoTableProps) => {
         </TableHead>
         <TableBody>
           {teams
+            .filter((x) => x.name.includes(searchQuery))
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((team, index) => (
               <TableRow key={index}>
@@ -48,7 +68,7 @@ const TeamInfoTable = ({ teams }: TeamInfoTableProps) => {
       <TablePagination
         rowsPerPageOptions={[]}
         component="div"
-        count={teams.length}
+        count={teams.filter((x) => x.name.includes(searchQuery)).length}
         rowsPerPage={6}
         page={page}
         onPageChange={handleChangePage}
