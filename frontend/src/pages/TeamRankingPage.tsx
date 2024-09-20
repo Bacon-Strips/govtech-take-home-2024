@@ -1,5 +1,11 @@
-import { useContext, useState } from "react";
-import { Box, Button, Typography } from "@mui/material";
+import { useContext, useEffect, useState } from "react";
+import {
+  AppBar,
+  Box,
+  Button,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 
 import { LogContext } from "../contexts/LogContext";
 import TeamInfoTable from "../components/TeamInfoTable";
@@ -42,6 +48,7 @@ const TeamRankingPage = () => {
   };
 
   const updateRankings = (teamAggregates: TeamAggregate[]) => {
+    if (teamAggregates.length == 0) return;
     setRankings(teamAggregates);
   };
 
@@ -65,81 +72,117 @@ const TeamRankingPage = () => {
     );
   };
 
+  useEffect(() => {
+    const savedTeams = localStorage.getItem("teams");
+    const savedMatches = localStorage.getItem("matches");
+    const savedRankings = localStorage.getItem("rankings");
+    console.log([savedTeams, savedMatches, savedRankings])
+    if (savedTeams) {
+      addTeams(JSON.parse(savedTeams));
+    }
+    if (savedMatches) {
+      addMatches(JSON.parse(savedMatches));
+    }
+    if (savedRankings) {
+      updateRankings(JSON.parse(savedRankings));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('teams', JSON.stringify(teams));
+  }, [teams]);
+
+  useEffect(() => {
+    localStorage.setItem('matches', JSON.stringify(matches));
+  }, [matches]);
+
+  useEffect(() => {
+    localStorage.setItem('rankings', JSON.stringify(rankings));
+  }, [rankings]);
+
   return (
-    <Box p={4}>
-      <Typography id="title" variant="h4" gutterBottom>
-        Championship Team Rankings
-      </Typography>
-
-      <Box
-        id="team-ranking-body"
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-        }}
-      >
+    <Box>
+      <Box sx={{ flexGrow: 1 }}>
+        <AppBar position="static">
+          <Toolbar>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              Championship Team Rankings
+            </Typography>
+            <Button color="inherit">Login</Button>
+          </Toolbar>
+        </AppBar>
+      </Box>
+      <Box p={4}>
         <Box
-          p={4}
-          id="team-info"
+          id="team-ranking-body"
           sx={{
             display: "flex",
-            flexDirection: "column",
-            flexGrow: 1,
+            flexDirection: "row",
+            justifyContent: "space-between",
           }}
         >
-          <Box mb={4}>
-            <TeamInputBox onAddTeams={addTeams} />
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={clearTeams}
-              sx={{ mt: 2 }}
-            >
-              Clear teams
-            </Button>
+          <Box
+            p={4}
+            id="team-info"
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              flexGrow: 1,
+            }}
+          >
+            <Box mb={4}>
+              <TeamInputBox onAddTeams={addTeams} />
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={clearTeams}
+                sx={{ mt: 2 }}
+              >
+                Clear teams
+              </Button>
+            </Box>
+            <TeamInfoTable teams={teams} updateTeam={updateTeam} />
           </Box>
-          <TeamInfoTable teams={teams} updateTeam={updateTeam} />
-        </Box>
 
-        <Box
-          p={4}
-          id="match-info"
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            flexGrow: 1,
-          }}
-        >
-          <Box mb={4}>
-            <MatchInputBox onAddMatches={addMatches} />
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={clearMatches}
-              sx={{ mt: 2 }}
-            >
-              Clear matches
-            </Button>
+          <Box
+            p={4}
+            id="match-info"
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              flexGrow: 1,
+            }}
+          >
+            <Box mb={4}>
+              <MatchInputBox onAddMatches={addMatches} />
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={clearMatches}
+                sx={{ mt: 2 }}
+              >
+                Clear matches
+              </Button>
+            </Box>
+            <MatchInfoTable matches={matches} updateMatch={updateMatch} />
           </Box>
-          <MatchInfoTable matches={matches} updateMatch={updateMatch} />
-        </Box>
 
-        <Box
-          id="ranking-info"
-          p={4}
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            flexGrow: 1,
-          }}
-        >
-          <RankCalculator
-            teams={teams}
-            matches={matches}
-            onCalculate={updateRankings}
-          />
-          <RankingTable ranks={rankings} />
+          <Box
+            id="ranking-info"
+            p={4}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              flexGrow: 1,
+            }}
+          >
+            <RankCalculator
+              teams={teams}
+              matches={matches}
+              onCalculate={updateRankings}
+            />
+            <RankingTable ranks={rankings} />
+          </Box>
         </Box>
       </Box>
     </Box>
