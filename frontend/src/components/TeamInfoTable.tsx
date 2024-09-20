@@ -42,8 +42,9 @@ const TeamInfoTable = ({ teams, updateTeam }: TeamInfoTableProps) => {
   };
 
   const handleSave = (index: number) => {
+    const oldTeam = teams[index + rowsPerPage * page];
     if (editedTeam) {
-      updateTeam(teams[index].name, editedTeam);
+      updateTeam(oldTeam.name, editedTeam);
     }
     setEditingRow(null);
   };

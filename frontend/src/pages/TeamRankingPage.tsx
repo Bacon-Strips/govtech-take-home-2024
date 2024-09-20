@@ -140,6 +140,20 @@ const TeamRankingPage = () => {
     );
   };
 
+  const updateMatch = (
+    oldTeamA: string,
+    oldTeamB: string,
+    updatedMatch: Match
+  ) => {
+    setMatches((prevMatches) =>
+      prevMatches.map((match) =>
+        match.teamA === oldTeamA && match.teamB === oldTeamB
+          ? updatedMatch
+          : match
+      )
+    );
+  };
+
   return (
     <Box p={4}>
       <Typography id="title" variant="h4" gutterBottom>
@@ -227,7 +241,7 @@ const TeamRankingPage = () => {
               Add Matches
             </Button>
           </Box>
-          <MatchInfoTable matches={matches} />
+          <MatchInfoTable matches={matches} updateMatch={updateMatch}/>
         </Box>
 
         <Box id="ranking-info" p={4}>
