@@ -5,40 +5,17 @@ import TeamInfoTable from "../components/TeamInfoTable";
 import { Match, Team, TeamAggregate } from "../types/types";
 import MatchInfoTable from "../components/MatchInfoTable";
 import RankingTable from "../components/RankingTable";
+import TeamInputBox from "../components/TeamInputBox";
 
 const TeamRankingPage = () => {
-  const [teamInput, setTeamInput] = useState("");
   const [matchInput, setMatchInput] = useState("");
   const [teams, setTeams] = useState<Team[]>([]);
   const [matches, setMatches] = useState<Match[]>([]);
   const [rankings, setRankings] = useState<TeamAggregate[]>([]);
 
-  const isTeamInputInvalid = () => {
-    let flag = false;
-    teamInput
-      .trim()
-      .split("\n")
-      .map((line) => {
-        const teamInfo = line.split(" ");
-        if (teamInfo.length != 3 || isNaN(parseInt(teamInfo[2]))) {
-          flag = true;
-        }
-      });
-    return flag;
-  };
-
-  const handleTeamSubmit = () => {
-    if (teamInput == "") return;
-    if (isTeamInputInvalid()) return;
-    const teamLines = teamInput.trim().split("\n");
-    const newTeams = teamLines.map((line) => {
-      const [name, date, group] = line.split(" ");
-      return { name, registrationDate: date, groupNumber: parseInt(group) };
-    });
-
+  const addTeams = (newTeams: Team[]) => {
     setTeams((prevTeams) => [...prevTeams, ...newTeams]);
-    setTeamInput("");
-  };
+  }
 
   const isMatchInputInvalid = () => {
     let flag = false;
@@ -166,40 +143,7 @@ const TeamRankingPage = () => {
       >
         <Box p={4} id="team-info">
           <Box mb={4}>
-            <Typography variant="h6">Enter Team Information</Typography>
-            <TextField
-              id="team-info-textbox"
-              multiline
-              rows={12}
-              fullWidth
-              placeholder="<Team name> <Registration date in DD/MM> <Group number>"
-              value={teamInput}
-              onChange={(e) => setTeamInput(e.target.value)}
-              sx={{
-                "& .MuiInputBase-input::placeholder": {
-                  color: "white",
-                },
-                "& .MuiInputBase-input": {
-                  color: "white",
-                },
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": {
-                    borderColor: "white",
-                  },
-                  "&:hover fieldset": {
-                    borderColor: "white",
-                  },
-                },
-              }}
-            />
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleTeamSubmit}
-              sx={{ mt: 2 }}
-            >
-              Add teams
-            </Button>
+            <TeamInputBox onAddTeams={addTeams}/>
           </Box>
           <TeamInfoTable teams={teams} updateTeam={updateTeam}/>
         </Box>
