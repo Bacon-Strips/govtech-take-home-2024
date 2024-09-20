@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Box, Button, TextField, Typography } from "@mui/material";
-import { Team } from "../types/types"; // Assuming this contains the Team interface
+import { Team } from "../types/types";
 
 interface TeamInputBoxProps {
-  onAddTeams: (newTeams: Team[]) => void; // Callback to pass the parsed teams back to parent
+  onAddTeams: (newTeams: Team[]) => void;
 }
 
 const TeamInputBox: React.FC<TeamInputBoxProps> = ({ onAddTeams }) => {

@@ -1,14 +1,14 @@
 import { useState } from "react";
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 
 import TeamInfoTable from "../components/TeamInfoTable";
 import { Match, Team, TeamAggregate } from "../types/types";
 import MatchInfoTable from "../components/MatchInfoTable";
 import RankingTable from "../components/RankingTable";
 import TeamInputBox from "../components/TeamInputBox";
+import MatchInputBox from "../components/MatchInputBox";
 
 const TeamRankingPage = () => {
-  const [matchInput, setMatchInput] = useState("");
   const [teams, setTeams] = useState<Team[]>([]);
   const [matches, setMatches] = useState<Match[]>([]);
   const [rankings, setRankings] = useState<TeamAggregate[]>([]);
@@ -17,42 +17,9 @@ const TeamRankingPage = () => {
     setTeams((prevTeams) => [...prevTeams, ...newTeams]);
   }
 
-  const isMatchInputInvalid = () => {
-    let flag = false;
-    matchInput
-      .trim()
-      .split("\n")
-      .map((line) => {
-        const matchInfo = line.split(" ");
-        if (
-          matchInfo.length != 4 ||
-          matchInfo[0] == matchInfo[1] ||
-          isNaN(parseInt(matchInfo[2])) ||
-          isNaN(parseInt(matchInfo[3]))
-        ) {
-          flag = true;
-        }
-      });
-    return flag;
-  };
-
-  const handleMatchSubmit = () => {
-    if (matchInput == "") return;
-    if (isMatchInputInvalid()) return;
-    const matchLines = matchInput.trim().split("\n");
-    const newMatches = matchLines.map((line) => {
-      const [teamA, teamB, goalsA, goalsB] = line.split(" ");
-      return {
-        teamA,
-        teamB,
-        teamAGoals: parseInt(goalsA),
-        teamBGoals: parseInt(goalsB),
-      };
-    });
-
+  const addMatches = (newMatches: Match[]) => {
     setMatches((prevMatches) => [...prevMatches, ...newMatches]);
-    setMatchInput("");
-  };
+  }
 
   const calculateRankings = (allMatches: Match[]) => {
     const teamAggregate: { [key: string]: TeamAggregate } = {};
@@ -150,40 +117,7 @@ const TeamRankingPage = () => {
 
         <Box p={4} id="match-info">
           <Box mb={4}>
-            <Typography variant="h6">Enter Match Results</Typography>
-            <TextField
-              id="match-results-textbox"
-              multiline
-              rows={12}
-              fullWidth
-              placeholder="<Team A name> <Team B name> <Team A goals scored> <Team B goals scored>"
-              value={matchInput}
-              onChange={(e) => setMatchInput(e.target.value)}
-              sx={{
-                "& .MuiInputBase-input::placeholder": {
-                  color: "white",
-                },
-                "& .MuiInputBase-input": {
-                  color: "white",
-                },
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": {
-                    borderColor: "white",
-                  },
-                  "&:hover fieldset": {
-                    borderColor: "white",
-                  },
-                },
-              }}
-            />
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleMatchSubmit}
-              sx={{ mt: 2 }}
-            >
-              Add Matches
-            </Button>
+            <MatchInputBox onAddMatches={addMatches}/>
           </Box>
           <MatchInfoTable matches={matches} updateMatch={updateMatch}/>
         </Box>
