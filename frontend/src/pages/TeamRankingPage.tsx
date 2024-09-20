@@ -132,6 +132,14 @@ const TeamRankingPage = () => {
     return dayA - dayB;
   };
 
+  const updateTeam = (oldTeamName: string, updatedTeam: Team) => {
+    setTeams((prevTeams) =>
+      prevTeams.map((team) =>
+        team.name === oldTeamName ? updatedTeam : team
+      )
+    );
+  };
+
   return (
     <Box p={4}>
       <Typography id="title" variant="h4" gutterBottom>
@@ -140,7 +148,7 @@ const TeamRankingPage = () => {
 
       <Box
         id="team-ranking-body"
-        sx={{ display: "flex", flexDirection: "row" }}
+        sx={{ display: "flex", flexDirection: "row" , justifyContent: "space-between"}}
       >
         <Box p={4} id="team-info">
           <Box mb={4}>
@@ -179,7 +187,7 @@ const TeamRankingPage = () => {
               Add teams
             </Button>
           </Box>
-          <TeamInfoTable teams={teams} />
+          <TeamInfoTable teams={teams} updateTeam={updateTeam}/>
         </Box>
 
         <Box p={4} id="match-info">

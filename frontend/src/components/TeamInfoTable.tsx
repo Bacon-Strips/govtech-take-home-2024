@@ -1,6 +1,7 @@
 import { useState } from "react";
 import {
   Box,
+  Button,
   Paper,
   Table,
   TableBody,
@@ -15,9 +16,12 @@ import { Team } from "../types/types";
 
 interface TeamInfoTableProps {
   teams: Team[];
+  updateTeam: (oldTeamName: string, updatedTeam: Team) => void;
 }
 
-const TeamInfoTable = ({ teams }: TeamInfoTableProps) => {
+const TeamInfoTable = ({ teams, updateTeam }: TeamInfoTableProps) => {
+  const [editingRow, setEditingRow] = useState<number | null>(null);
+  const [editedTeam, setEditedTeam] = useState<Team | null>(null);
   const [page, setPage] = useState(0);
   const rowsPerPage = 6;
 
@@ -30,6 +34,27 @@ const TeamInfoTable = ({ teams }: TeamInfoTableProps) => {
   const handleSearchChange = (query: string) => {
     setSearchQuery(query);
     setPage(0);
+  };
+
+  const handleEdit = (team: Team, index: number) => {
+    setEditingRow(index);
+    setEditedTeam({ ...team });
+  };
+
+  const handleSave = (index: number) => {
+    if (editedTeam) {
+      updateTeam(teams[index].name, editedTeam);
+    }
+    setEditingRow(null);
+  };
+
+  const handleCancel = () => {
+    setEditingRow(null);
+    setEditedTeam(null);
+  };
+
+  const handleFieldChange = (field: keyof Team, value: string | number) => {
+    setEditedTeam((prev) => (prev ? { ...prev, [field]: value } : null));
   };
 
   return (
@@ -48,7 +73,7 @@ const TeamInfoTable = ({ teams }: TeamInfoTableProps) => {
         <TableHead>
           <TableRow>
             <TableCell>Team Name</TableCell>
-            <TableCell>Registration Date</TableCell>
+            <TableCell>Registration Date (DD/MM)</TableCell>
             <TableCell>Group</TableCell>
           </TableRow>
         </TableHead>
@@ -58,9 +83,77 @@ const TeamInfoTable = ({ teams }: TeamInfoTableProps) => {
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((team, index) => (
               <TableRow key={index}>
-                <TableCell>{team.name}</TableCell>
-                <TableCell>{team.registrationDate}</TableCell>
-                <TableCell>{team.groupNumber}</TableCell>
+                <TableCell>
+                  {editingRow === index ? (
+                    <TextField
+                      variant="standard"
+                      value={editedTeam?.name || ""}
+                      onChange={(e) =>
+                        handleFieldChange("name", e.target.value)
+                      }
+                    />
+                  ) : (
+                    team.name
+                  )}
+                </TableCell>
+                <TableCell>
+                  {editingRow === index ? (
+                    <TextField
+                      variant="standard"
+                      value={editedTeam?.registrationDate || ""}
+                      onChange={(e) =>
+                        handleFieldChange("registrationDate", e.target.value)
+                      }
+                    />
+                  ) : (
+                    team.registrationDate
+                  )}
+                </TableCell>
+                <TableCell>
+                  {editingRow === index ? (
+                    <TextField
+                      type="number"
+                      variant="standard"
+                      value={editedTeam?.groupNumber || ""}
+                      onChange={(e) =>
+                        handleFieldChange(
+                          "groupNumber",
+                          parseInt(e.target.value)
+                        )
+                      }
+                    />
+                  ) : (
+                    team.groupNumber
+                  )}
+                </TableCell>
+                <TableCell>
+                  {editingRow === index ? (
+                    <Box sx={{ display: "flex", flexDirection: "row" }}>
+                      <Button
+                        onClick={() => handleSave(index)}
+                        variant="contained"
+                        color="primary"
+                      >
+                        Save
+                      </Button>
+                      <Button
+                        onClick={handleCancel}
+                        variant="outlined"
+                        color="secondary"
+                        sx={{ ml: 2 }}
+                      >
+                        Cancel
+                      </Button>
+                    </Box>
+                  ) : (
+                    <Button
+                      onClick={() => handleEdit(team, index)}
+                      variant="outlined"
+                    >
+                      Edit
+                    </Button>
+                  )}
+                </TableCell>
               </TableRow>
             ))}
         </TableBody>
