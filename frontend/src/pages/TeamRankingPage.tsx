@@ -99,7 +99,6 @@ const TeamRankingPage = () => {
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               Championship Team Rankings
             </Typography>
-            <Button color="inherit">Login</Button>
           </Toolbar>
         </AppBar>
       </Box>
